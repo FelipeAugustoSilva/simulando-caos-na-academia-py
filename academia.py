@@ -25,4 +25,37 @@ class Academia:
         num_caos = [i for i, j in self.porta_halteres.items() if i != j]
         return len(num_caos) / len(self.porta_halteres)
 
-self = Academia()
+class Usuario:
+    def __init__(self, tipo, academia):
+        self.tipo = tipo # 1 - normal | 2 - Bagunceiro
+        self.academia = academia
+        self.peso = 0
+    
+    def iniciar_treino(self):
+        lista_pesos = self.academia.listar_halteres()
+        self.peso = random.choice(lista_pesos)
+        self.academia.pegar_haltere(self.peso)
+    
+    def finalizar_treino(self):
+        espacos = self.academia.listar_espacos()
+
+        if self.tipo == 1:
+            if self.peso in espacos:
+                self.academia.devolver_halter(self.peso, self.peso)
+            else:
+                pos = random.choice(espacos)
+                self.academia.devolver_halter(pos, self.peso)
+        
+
+        if self.tipo == 2:
+            pos = random.choice(espacos)
+            self.academia.devolver_halter(pos, self.peso)
+        
+        self.peso = 0
+
+
+
+academia = Academia()
+
+usuarios = [Usuario(1, academia) for i in range(10)]
+usuarios = [Usuario(2, academia) for i in range(1)]
