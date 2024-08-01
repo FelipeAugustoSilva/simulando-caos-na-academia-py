@@ -1,5 +1,6 @@
 import random
 
+
 class Academia:
     def __init__(self):
         self.halteres = [i for i in range(10, 36) if i % 2 == 0]
@@ -11,6 +12,9 @@ class Academia:
     
     def listar_halteres(self):
         return [i for i in self.porta_halteres.values() if i != 0]
+    
+    def listar_espacos(self):
+        return [i for i, j in self.porta_halteres.items() if j == 0]
     
     def pegar_halteres(self, peso):
         halt_pos = list(self.porta_halteres.values()).index(peso)
@@ -34,7 +38,7 @@ class Usuario:
     def iniciar_treino(self):
         lista_pesos = self.academia.listar_halteres()
         self.peso = random.choice(lista_pesos)
-        self.academia.pegar_haltere(self.peso)
+        self.academia.pegar_halteres(self.peso)
     
     def finalizar_treino(self):
         espacos = self.academia.listar_espacos()
@@ -58,4 +62,26 @@ class Usuario:
 academia = Academia()
 
 usuarios = [Usuario(1, academia) for i in range(10)]
-usuarios = [Usuario(2, academia) for i in range(1)]
+usuarios += [Usuario(2, academia) for i in range(1)]
+
+random.shuffle(usuarios)
+
+list_chaos = []
+
+for k in range(50):
+    academia.reiniciar_o_dia()
+
+    for i in range(10):
+        random.shuffle(usuarios)
+        for user in usuarios:
+             user.iniciar_treino()
+        for user in usuarios:
+            user.finalizar_treino()
+    
+    list_chaos += [academia.calcular_caos()]
+
+
+import seaborn as sns
+print(sns.__version__)
+sns.displot(list_chaos)
+
